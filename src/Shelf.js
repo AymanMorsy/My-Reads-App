@@ -16,6 +16,7 @@ BooksAPI.getAll().then((books)=>{
 updateShelf = (book, bookShelf) => {
     BooksAPI.update(book, bookShelf)
         .then(()=>{
+	this.componentDidMount()
 
         // how to rerender component after updating books shelf state          
 
