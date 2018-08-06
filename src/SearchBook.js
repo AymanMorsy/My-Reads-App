@@ -5,8 +5,6 @@ import Book from './Book'
 import sortBy from 'sort-by';
 import escapeRegExp from 'escape-string-regexp';
 
-
-
 class SearchBook extends Component {
 state = { 
     query:'',
@@ -24,7 +22,7 @@ state = {
  updateQuery = (query)=>{
     let matchedBooks;
     this.setState({query:query})
-    if(query){
+    if(query && query !== ' '){
         
         BooksAPI.search(query).then((search)=>{
             const match = new RegExp(escapeRegExp(this.state.query),'i')
@@ -47,11 +45,9 @@ state = {
     
 }
 
-
-
-
 render() { 
     const {search,query,result}=this.state    
+
     return (
         <div className="search-books">
             <div className="search-books-bar">
@@ -61,7 +57,7 @@ render() {
                 type="text" 
                 placeholder="Search by title or author"
                 value ={query}
-                onChange ={(e)=> this.updateQuery(e.target.value.trim())}
+                onChange ={(e)=> this.updateQuery(e.target.value)}
                 />
             </div>
             </div>
@@ -82,6 +78,7 @@ render() {
                                     }}
                                     author = {book.authors ? book.authors.toString() : 'Unknown!'}                                    
                                     bookTitle = {book.title}
+                                    
                                     update = {(e) => {this.updateShelf(book, e.target.value)}}
                                 />
                             </li>

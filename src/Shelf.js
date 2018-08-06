@@ -1,40 +1,14 @@
 import React, { Component } from 'react';
 import Book from './Book'
-import * as BooksAPI from './BooksAPI'
+
 
 class Shelf extends Component {
-state = {
-    books:[]
-}
-componentDidMount(){
-BooksAPI.getAll().then((books)=>{
-    this.setState({books})
-    });
-
-}
-
-updateShelf = (book, bookShelf) => {
-    BooksAPI.update(book, bookShelf)
-        .then(()=>{
-	this.componentDidMount()
-
-        // how to rerender component after updating books shelf state          
-
-            })
-}
-
-
-
 render() { 
-    const {category,title} = this.props
-    const {books}=this.state
-    
+    const {category,title,updateShelf,books} = this.props       
     let bookCategory ;
     if(books.length){
-        bookCategory = books.filter((book)=>  book.shelf === category)
-       
+        bookCategory = books.filter((book)=>  book.shelf === category)      
     }
- 
 
     return ( 
         <div className="bookshelf">
@@ -42,9 +16,7 @@ render() {
             <div className="bookshelf-books">
             <ol className="books-grid">
                 {
-
-                    bookCategory && bookCategory.map(book => (
-                            
+                    bookCategory && bookCategory.map(book => (                        
                             <li key = {book.id}>
                                 <Book 
                                     style ={{ 
@@ -57,21 +29,17 @@ render() {
                                     author = {book.authors ? book.authors.toString() : 'Unknown!'}
                                     bookTitle = {book.title}
                                     category = {category}
-                                    update = {(e) => {this.updateShelf(book, e.target.value)}}
+                                    update = {(e) => {updateShelf(book, e.target.value)}}
                                 />
                             </li>
-                        ))
-                    
+                        ))                    
                 }
-
-
             </ol>
             </div>
         </div>
       );
     }
-}
- 
+} 
 export default Shelf;
 
 
