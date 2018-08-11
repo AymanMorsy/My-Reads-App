@@ -1,39 +1,41 @@
 import React, { Component } from 'react';
 import Book from './Book'
+import Cover from './foo.png'
 
 
 class Shelf extends Component {
-render() { 
-    const {category,title,updateShelf,books} = this.props       
-    let bookCategory ;
-    if(books.length){
-        bookCategory = books.filter((book)=>  book.shelf === category)      
-    }
+
+render() {
+const {onShelfBooks,updateShelf,shelfTilte,bookCategory} = this.props
 
     return ( 
         <div className="bookshelf">
-            <h2 className="bookshelf-title">{title}</h2>
+            <h2 className="bookshelf-title">{shelfTilte}</h2>
             <div className="bookshelf-books">
             <ol className="books-grid">
-                {
-                    bookCategory && bookCategory.map(book => (                        
-                            <li key = {book.id}>
-                                <Book 
-                                    style ={{ 
-                                        width: 128, 
-                                        height: 192, 
-                                        backgroundImage: `url(${book.imageLinks ? book.imageLinks.smallThumbnail :'https://image.ibb.co/jXn9Ae/Cover_Coming_Soon.png'})`,
-                                        backgroundSize: 'cover',
-                                        backgroundPosition: 'center'
-                                        }}
-                                    author = {book.authors ? book.authors.toString() : 'Unknown!'}
-                                    bookTitle = {book.title}
-                                    category = {category}
-                                    update = {(e) => {updateShelf(book, e.target.value)}}
-                                />
-                            </li>
-                        ))                    
-                }
+            {
+                /*filter books by it's shelf and maping to render*/ 
+                onShelfBooks.filter(book => book.shelf === bookCategory).map(book => (
+                    <li key={book.id}>
+                        <Book                              
+                            title ={book.title}
+                            authors ={book.authors}
+                            style = {{ 
+                                width: 128, 
+                                height: 193, 
+                                backgroundImage: `url(${book.imageLinks?
+                                    book.imageLinks.smallThumbnail:Cover})`, 
+                                backgroundSize:'cover'    
+                            }}
+                          
+                            bookshelf = {bookCategory}
+                            updateShelf ={updateShelf}
+                            book ={book} 
+                        /> 
+                    </li>
+
+                ))
+            }
             </ol>
             </div>
         </div>

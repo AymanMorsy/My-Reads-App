@@ -1,94 +1,86 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import * as BooksAPI from './BooksAPI'
-import Book from './Book'
-import sortBy from 'sort-by';
-import escapeRegExp from 'escape-string-regexp';
+import Book from './Book';
+import Cover from './foo.png'
+
 
 class SearchBook extends Component {
-state = { 
-    query:'',
-    search:[],
-    result:''
- }
+state = {
+    query:"",
+    rawBooks : [],
+    onShelfBooks:[]
+    }
 
- updateShelf = (book, bookShelf) => {
-    BooksAPI.update(book, bookShelf)
-        .then(()=>{
-            this.setState(this.state)
-            })
+componentWillMount(){
+    BooksAPI.getAll()
+    .then(books => this.setState({onShelfBooks:books}))
 }
 
- updateQuery = (query)=>{
-    let matchedBooks;
+searchQuery(query){
     this.setState({query:query})
-    if(query && query !== ' '){
-        
-        BooksAPI.search(query).then((search)=>{
-            const match = new RegExp(escapeRegExp(this.state.query),'i')
-            matchedBooks = search.filter((book)=> match.test(book.title))
-            this.setState({
-                search:matchedBooks,
-                result:'Your Search Matching : ' + matchedBooks.length + ' Books'
-            })
-            this.state.search.sort(sortBy('name'))
-            }).catch(()=>{
-                this.setState({
-                    search:[],
-                    result:'Nothing Match Your Query In Our Store'})
-            })
+    if(query){
+        BooksAPI.search(query)
+        .then(rawBooks => {
+            this.setState({rawBooks:rawBooks.error?[]:rawBooks})
+        })
     }else{
-        this.setState({
-            search:[],
-            result:''})
-        }
-    
+        this.setState({rawBooks:[]})
+    }    
 }
 
-render() { 
-    const {search,query,result}=this.state    
+updateShelf = (book,shelf)=>{
+    BooksAPI.update(book,shelf)   
+}
 
-    return (
-        <div className="search-books">
-            <div className="search-books-bar">
-                <Link to ='/' className="close-search">Close</Link>
-            <div className="search-books-input-wrapper">
-                <input 
-                type="text" 
-                placeholder="Search by title or author"
-                value ={query}
-                onChange ={(e)=> this.updateQuery(e.target.value)}
-                />
-            </div>
-            </div>
-            <div className="search-books-results">
-                <p>{result !== ''?result:''}</p>
-                <ol className="books-grid">
-                {
-                    search.length !== 0 && search.map(book => (
-                            
-                            <li key = {book.id}>
+
+render() {
+    const {query,rawBooks,onShelfBooks} = this.state
+  
+        return (
+            <div className="search-books">
+                <div className="search-books-bar">
+                    <Link to ='/' className="close-search">Close</Link>
+                <div className="search-books-input-wrapper">
+                    <input 
+                    type="text" 
+                    placeholder="Search by book title"
+                    value ={query}
+                    onChange ={(e)=> this.searchQuery(e.target.value)}                    
+                    />
+                </div>
+                </div>
+                <div className="search-books-results">
+                    <ol className="books-grid">
+                    {
+                        rawBooks.map(rawBooks =>{
+                            let shelf ='none'
+                            onShelfBooks.map(shBook => shBook.id === rawBooks.id ? shelf = shBook.shelf :'' )
+                            return (
+                                <li key={rawBooks.id}>
                                 <Book 
-                                    style ={{ 
+                                    title ={rawBooks.title}
+                                    authors ={rawBooks.authors}
+                                    style = {{ 
                                         width: 128, 
-                                        height: 192, 
-                                        backgroundImage: `url(${book.imageLinks ? book.imageLinks.smallThumbnail :'https://image.ibb.co/jXn9Ae/Cover_Coming_Soon.png'})`,
-                                        backgroundSize: 'cover',
-                                        backgroundPosition: 'center'
+                                        height: 193, 
+                                        backgroundImage: `url(${rawBooks.imageLinks?
+                                            rawBooks.imageLinks.smallThumbnail:Cover})`, 
+                                        backgroundSize:'cover'
                                     }}
-                                    author = {book.authors ? book.authors.toString() : 'Unknown!'}                                    
-                                    bookTitle = {book.title}
-                                    
-                                    update = {(e) => {this.updateShelf(book, e.target.value)}}
+                                    onShelfBooks ={onShelfBooks} 
+                                    book = {rawBooks}
+                                    updateShelf ={this.updateShelf} 
+                                    shelf={shelf}                                   
                                 />
                             </li>
-                        ))
-
+                            )
+                        })
                     }
-                </ol>
+                    </ol>
+                </div>
             </div>
-        </div>
-    );
+        );
 }
 }
  
