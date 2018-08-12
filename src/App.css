@@ -172,3 +172,25 @@ body, .app {
   text-align: center;
   font-size: 0.8em;
 }
+
+.error_404{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 250px;
+}
+.error-title{
+  margin: 0;
+  text-align: center;
+  color: antiquewhite;
+}
+.error-container{
+  background-color: black;
+  height: 100vh;
+  padding-top: 50px;
+}
+@media only screen and (max-width: 600px) {
+  .error_404{
+    width:50%
+  }
+}

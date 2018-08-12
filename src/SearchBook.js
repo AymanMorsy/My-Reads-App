@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
-import * as BooksAPI from './BooksAPI'
+import * as BooksAPI from './BooksAPI';
 import Book from './Book';
-import Cover from './foo.png'
-
+import Cover from './foo.png';
+import {DebounceInput} from 'react-debounce-input';
 
 class SearchBook extends Component {
 state = {
@@ -42,7 +42,9 @@ render() {
                 <div className="search-books-bar">
                     <Link to ='/' className="close-search">Close</Link>
                 <div className="search-books-input-wrapper">
-                    <input 
+                    <DebounceInput 
+                    minLength={3}
+                    debounceTimeout={300}
                     type="text" 
                     placeholder="Search by book title"
                     value ={query}
