@@ -4,12 +4,18 @@ This Project repositry created as a part of Google Scholarship of Udacity ND
 also you can search about Your favorits books and add to the right shelf you want  
 
 ## How to install app locally
-1- Clone this repository or [download](https://github.com/AymanMorsy/My-Reads-App.git)
-2- Go to the app directory cd **My-Reads-App-master**.
-3- Run npm install to install scripts and dependencies of the project:
-* npm install -save raect-router-dom
-* npm install --save escape-string-regexp
-* npm install --save react react-debounce-input
+
+1 - Clone this repository or [download](https://github.com/AymanMorsy/My-Reads-App.git)
+
+2 - Go to the app directory cd **My-Reads-App-master**.
+
+3 - Run npm install to install scripts and dependencies of the project:
+
+```
+npm install -save raect-router-dom
+npm install --save escape-string-regexp
+npm install --save react react-debounce-input
+```
 
 4-run npm start you will be redirct to  http://localhost:3000/.
 
