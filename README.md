@@ -11,12 +11,6 @@ also you can search about Your favorits books and add to the right shelf you wan
 
 3 - Run npm install to install scripts and dependencies of the project:
 
-```
-npm install -save raect-router-dom
-npm install --save escape-string-regexp
-npm install --save react react-debounce-input
-```
-
 4-run npm start you will be redirct to  http://localhost:3000/.
 
 ## `Important`
@@ -28,6 +22,4 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Contributing
 
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
-
-For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
+If you want to contribute to a project and make it better, your help is very welcome.
